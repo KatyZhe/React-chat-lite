@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import socket from "./socket";
+
+import JoinBlock from "./components/JoinBlock";
+import { useReducer } from "react";
+import reducer from "./reducer";
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, { isAuth: false });
+
+  const onLogin = () => {
+    dispatch({
+      type: "IS_AUTH",
+      payload: true,
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      {!state.isAuth && <JoinBlock onLogin={onLogin} />}
     </div>
   );
 }
