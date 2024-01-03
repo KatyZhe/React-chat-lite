@@ -6,20 +6,22 @@ import socket from "../socket";
 export default function JoinBlock({ onLogin }) {
   const [roomId, setRoomId] = useState("");
   const [userName, setUserName] = useState("");
-  const [isLoading, setIsLoading] =useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onEnter = async() => {
+  const onEnter = async () => {
     if (!roomId || !userName) {
       return alert("Введите верные данные!");
     }
+
+    const obj = {
+      roomId,
+      userName,
+    };
     setIsLoading(true);
     await axios
-      .post("/rooms", {
-        roomId,
-        userName,
-      })
-      .then(onLogin());
-      setIsLoading(false);
+      .post("/rooms", obj)
+      .then(onLogin(obj));
+    setIsLoading(false);
   };
 
   return (
@@ -36,8 +38,12 @@ export default function JoinBlock({ onLogin }) {
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-      <button disabled={isLoading} className="btn btn-success" onClick={onEnter}>
-        {isLoading ? 'Вход...' : 'Войти'}
+      <button
+        disabled={isLoading}
+        className="btn btn-success"
+        onClick={onEnter}
+      >
+        {isLoading ? "Вход..." : "Войти"}
       </button>
     </div>
   );
