@@ -1,27 +1,22 @@
-import React, { useState } from "react";
-import axios from "axios";
-import reducer from "../reducer";
-import socket from "../socket";
+import React from 'react';
+import axios from 'axios';
 
-export default function JoinBlock({ onLogin }) {
-  const [roomId, setRoomId] = useState("");
-  const [userName, setUserName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+function JoinBlock({ onLogin }) {
+  const [roomId, setRoomId] = React.useState('');
+  const [userName, setUserName] = React.useState('');
+  const [isLoading, setLoading] = React.useState(false);
 
   const onEnter = async () => {
     if (!roomId || !userName) {
-      return alert("Введите верные данные!");
+      return alert('Неверные данные');
     }
-
     const obj = {
       roomId,
       userName,
     };
-    setIsLoading(true);
-    await axios
-      .post("/rooms", obj)
-      .then(onLogin(obj));
-    setIsLoading(false);
+    setLoading(true);
+    await axios.post('/rooms', obj);
+    onLogin(obj);
   };
 
   return (
@@ -34,17 +29,15 @@ export default function JoinBlock({ onLogin }) {
       />
       <input
         type="text"
-        placeholder="Введите имя"
+        placeholder="Ваше имя"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-      <button
-        disabled={isLoading}
-        className="btn btn-success"
-        onClick={onEnter}
-      >
-        {isLoading ? "Вход..." : "Войти"}
+      <button disabled={isLoading} onClick={onEnter} className="btn btn-success">
+        {isLoading ? 'ВХОД...' : 'ВОЙТИ'}
       </button>
     </div>
   );
 }
+
+export default JoinBlock;

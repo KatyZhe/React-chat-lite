@@ -1,5 +1,6 @@
 import "./App.css";
 import socket from "./socket";
+import axios from "axios";
 
 import JoinBlock from "./components/JoinBlock";
 import Chat from "./components/Chat";
@@ -12,14 +13,21 @@ function App() {
     joined: false,
     roomId: null,
     userName: null,
+    users: [],
+    messages: [],
   });
 
-  const onLogin = (obj) => {
+  const onLogin = async (obj) => {
     dispatch({
-      type: "JOINED",
+      type: 'JOINED',
       payload: obj,
     });
-    socket.emit("ROOM:JOIN", obj);
+    socket.emit('ROOM:JOIN', obj);
+    const { data } = await axios.get(`/rooms/${obj.roomId}`);
+    dispatch({
+      type: 'SET_DATA',
+      payload: data,
+    });
   };
 
   const setUsers = (users) => {
